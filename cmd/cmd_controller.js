@@ -136,7 +136,7 @@ class EmbarkController {
         engine.startService("deployment");
         engine.startService("storage");
         engine.startService("codeGenerator");
-        engine.startService("namingSystem");
+        // engine.startService("namingSystem");
 
         engine.events.on('check:backOnline:Ethereum', function () {
           engine.logger.info(__('Ethereum node detected') + '..');
