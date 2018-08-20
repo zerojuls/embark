@@ -32,9 +32,8 @@ module.exports = {
     ],
     gas: "auto",
     contracts: {
-      SimpleStorage: {
-        fromIndex: 0,
-        args: [100]
+      lib: {
+        from: "0x00f641ff6feebf1bf5a9c4f8b82d4ef2a177dd78"
       }
     }
   }
