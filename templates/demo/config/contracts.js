@@ -5,24 +5,15 @@ module.exports = {
     deployment: {
       host: "localhost", // Host of the blockchain node
       port: 8545, // Port of the blockchain node
-      type: "rpc" // Type of connection (ws or rpc),
+      type: "rpc", // Type of connection (ws or rpc),
       // Accounts to use instead of the default account to populate your wallet
-      /*,accounts: [
+      accounts: [
         {
-          privateKey: "your_private_key",
-          balance: "5 ether"  // You can set the balance of the account in the dev environment
-                              // Balances are in Wei, but you can specify the unit with its name
-        },
-        {
-          privateKeyFile: "path/to/file" // You can put more than one key, separated by , or ;
-        },
-        {
-          mnemonic: "12 word mnemonic",
-          addressIndex: "0", // Optionnal. The index to start getting the address
-          numAddresses: "1", // Optionnal. The number of addresses to get
-          hdpath: "m/44'/60'/0'/0/" // Optionnal. HD derivation path
+          mnemonic: "word word word word word word word word word word word word",
+          balance: "90 ether"
         }
-      ]*/
+      ]
+
     },
     // order of connections the dapp should connect to
     dappConnection: [
@@ -32,8 +23,8 @@ module.exports = {
     ],
     gas: "auto",
     contracts: {
-      lib: {
-        from: "0x00f641ff6feebf1bf5a9c4f8b82d4ef2a177dd78"
+      ewasm_precompile_identity: {
+        fromIndex: 0
       }
     }
   }
