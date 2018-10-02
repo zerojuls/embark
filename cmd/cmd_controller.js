@@ -134,6 +134,7 @@ class EmbarkController {
         engine.startService("storage");
         engine.startService("codeGenerator");
         engine.startService("namingSystem");
+        engine.startService("livepeer");
         engine.startService("console");
         engine.startService("pluginCommand");
 

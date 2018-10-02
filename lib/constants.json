@@ -42,6 +42,11 @@
       "rinkeby": 4
     }
   },
+  "livepeer": {
+    "init": "livepeer:init",
+    "ready": "livepeer:init",
+    "exit": "livepeer:exit"
+  },
   "storage": {
     "init": "init",
     "initiated": "initiated"
