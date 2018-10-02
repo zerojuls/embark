@@ -2,7 +2,7 @@ module.exports = {
   // default applies to all environments
   default: {
     enabled: true,  // Default false
-    bin: "livepeer" // Location of the binary, default to 'livepeer'
+    bin: "/Users/anthony/code/livepeer/livepeer" // Location of the binary, default to 'livepeer'
   },
 
   development: {
