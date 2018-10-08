@@ -1,0 +1,58 @@
+{
+  "0x7329f85caff1ecbdaa0924a5e36b5ffb95ce4ad067d94046ea4700d7f8573f4c": {
+    "contracts": {
+      "0xb920a63b900012d7c71d58838ae724b449f85efd56dd4e35d1a4121d128dfc39": {
+        "name": "IJobsManager",
+        "address": "0xb49C721D6B624e053A8A52415Fd97883B8fF6B01"
+      },
+      "0xb84d125645e94e6329e6494db63830d1c68a719c328036dce55337f79a512e27": {
+        "name": "SimpleStorage",
+        "address": "0xD31960245e44636F59fF430fF71B4A9c510f71E8"
+      },
+      "0xbe576953b5a96fff2ebf67943abb47fc19ca651187ee8603fb55d6a102539fb2": {
+        "name": "Controller",
+        "address": "0xDc956bca20812A11D2c8fD9d955D36dd97F47Ee4"
+      },
+      "0x342b88c6d16a2db69115d7590796e8a4d5fea8744d35ca759e0df526a774b503": {
+        "name": "LivepeerToken",
+        "address": "0x4D8c6e992F38aA1C717146FA9bC024940883958b"
+      },
+      "0x3043b04ad856d169c8f0b0509c0bc63192dc7edd92d6933c58708298a0e381be": {
+        "name": "ENSRegistry",
+        "address": "0x595007Fa805eC70bB70963717b1AC22222199900"
+      },
+      "0xa7b30080f0bdd8e83457a394bdf18716add9bf0b09d20c4cd9419a3e7446855b": {
+        "name": "ServiceRegistryProxy",
+        "address": "0xA9381c13acac9E4E04D9e90C5B1CDb792cDdCe25"
+      },
+      "0xb02bcac7722767fde2f64f1218ec3dc106870eb84cb399a3f7cd97b9d80955db": {
+        "name": "ServiceRegistryTarget",
+        "address": "0xE2704d96eCf739afc00E8A260227d7AF167710EA"
+      },
+      "0x884d2df8fda86934aa974058c18c70ff90ebd8dce68b9c432a9c7ccb8391b574": {
+        "name": "RoundManagerProxy",
+        "address": "0x76073df05ebeb6a7767430f15DCf11942d8aF782"
+      },
+      "0x3a2a15469a045ea2e33eb3ac21c96170fc4bd322a8b0f6da64368b3ce0799a83": {
+        "name": "RoundManagerTarget",
+        "address": "0xaFC11c6f2F5589837bAfD9388816Ed0b9b5bBc78"
+      },
+      "0x4b6c6c0fe8f2b82f956a025004074daa50280724a395529cdffd3ec569c6ae91": {
+        "name": "JobsManagerProxy",
+        "address": "0x0B38608FeE389B6d180FEB0C0372c45CB602ff09"
+      },
+      "0x0345caa9998495a010927c630628fc1ab770831a13e86edaac650f2ad1bb1436": {
+        "name": "BondingManagerProxy",
+        "address": "0x2ccC7072D8FaA5c99394DADde40866d3aC3f7636"
+      },
+      "0x0ff24213bcee12f80e57229d34543da907ff4bc03009496adc79e6efc175b35e": {
+        "name": "LivepeerVerifier",
+        "address": "0xaB5C8DA073C80Ff50b6b0A39309b8Bbff2280fB9"
+      },
+      "0x4fac34be6df250b65a3ed26aa60dd132a3cf6d845dafb99676dc60d955ce65df": {
+        "name": "Minter",
+        "address": "0xEbc10B367Cb9d15DC6Ca7bdB85f31606065bca1F"
+      }
+    }
+  }
+}
