@@ -193,11 +193,18 @@ class ContractDeployer {
     contract.deployedAddress = trackedContract.address;
     self.events.emit("deploy:contract:deployed", contract);
 
-    // TODO: can be moved into a afterDeploy event
-    // just need to figure out the gasLimit coupling issue
-    self.events.request('code-generator:contract:vanilla', contract, contract._gasLimit || false, (contractCode) => {
-      self.events.request('runcode:eval', contractCode, () => {}, true);
-      return callback();
+    self.events.request('code-generator:contract:custom', contract, (customContractCode) => {
+      if (!customContractCode) {
+        // TODO: can be moved into a afterDeploy event
+        // just need to figure out the gasLimit coupling issue
+        self.events.request('code-generator:contract:vanilla', contract, contract._gasLimit || false, (contractCode) => {
+          self.events.request('runcode:eval', contractCode, () => {}, true);
+          return callback();
+        });
+      } else {
+        self.events.request('runcode:eval', customContractCode, () => {}, true);
+        return callback();
+      }
     });
   }
 
@@ -306,14 +313,25 @@ class ContractDeployer {
           self.events.emit("deploy:contract:receipt", receipt);
           self.events.emit("deploy:contract:deployed", contract);
 
-          // TODO: can be moved into a afterDeploy event
-          // just need to figure out the gasLimit coupling issue
-          self.events.request('code-generator:contract:vanilla', contract, contract._gasLimit || false, (contractCode) => {
-            self.events.request('runcode:eval', contractCode, () => {}, true);
-            self.plugins.runActionsForEvent('deploy:contract:deployed', {contract: contract}, () => {
-              return next(null, receipt);
-            });
+
+          self.events.request('code-generator:contract:custom', contract, (customContractCode) => {
+            if (!customContractCode) {
+              // TODO: can be moved into a afterDeploy event
+              // just need to figure out the gasLimit coupling issue
+              self.events.request('code-generator:contract:vanilla', contract, contract._gasLimit || false, (contractCode) => {
+                self.events.request('runcode:eval', contractCode, () => {}, true);
+                self.plugins.runActionsForEvent('deploy:contract:deployed', {contract: contract}, () => {
+                  return next(null, receipt);
+                });
+              });
+            } else {
+              self.events.request('runcode:eval', customContractCode, () => {}, true);
+              self.plugins.runActionsForEvent('deploy:contract:deployed', {contract: contract}, () => {
+                return next(null, receipt);
+              });
+            }
           });
+
         });
       }
     ], callback);
