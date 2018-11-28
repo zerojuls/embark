@@ -299,11 +299,13 @@ class ContractDeployer {
             }
             return next(new Error("error deploying =" + contract.className + "= due to error: " + error.message));
           }
+
           self.logFunction(contract)(contract.className.bold.cyan + " " + __("deployed at").green + " " + receipt.contractAddress.bold.cyan + " " + __("using").green + " " + receipt.gasUsed + " " + __("gas").green);
           contract.deployedAddress = receipt.contractAddress;
           contract.transactionHash = receipt.transactionHash;
           receipt.className = contract.className;
-          self.events.emit("deploy:contract:receipt", receipt);
+
+          if(receipt) self.events.emit("deploy:contract:receipt", receipt);
           self.events.emit("deploy:contract:deployed", contract);
 
           // TODO: can be moved into a afterDeploy event
