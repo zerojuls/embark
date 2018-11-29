@@ -55,6 +55,7 @@ class LogHandler {
       processedMessages = [msg.message];
     } else if (Array.isArray(msg.message)) {
       msg.message.forEach(message => {
+        if(message === Object(message)) return; // test for objects - don't know how to handle these
         if (Array.isArray(message)) message = message.join('\n');
         let lines = message.split("\n");
         lines.forEach(line => processedMessages.push(line));
