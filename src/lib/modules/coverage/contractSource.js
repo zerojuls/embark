@@ -280,6 +280,7 @@ class ContractSource {
   _generateCodeCoverageForBytecode(trace, coverage, sourceMapToNodeType, contractBytecode) {
     let contractMatches = true;
     for(const contractName in contractBytecode) {
+      console.dir(contractName);
       const bytecode = contractBytecode[contractName];
 
       // Try to match the contract to the bytecode. If it doesn't,
@@ -294,10 +295,10 @@ class ContractSource {
         if(!step.sourceMap || step.sourceMap === '' || step.sourceMap === SourceMap.empty()) return;
         
         const sourceMapString = step.sourceMap.toString(this.id);
-        
+        console.dir(sourceMapString);
         const [offsetToFind, lengthToFind, _] = sourceMapString.split(":");
         const nodes = this._findNodes(offsetToFind, lengthToFind, sourceMapToNodeType);
-
+        
         if(!nodes) return;
 
         nodes.forEach((node) => {
