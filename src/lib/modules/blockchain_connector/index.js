@@ -218,6 +218,14 @@ class BlockchainConnector {
     code += "\nEmbarkJS.Blockchain.setProvider('web3', {});";
 
     this.embark.addCodeToEmbarkJS(code);
+
+    code = "EmbarkJS.Blockchain.setProvider('web3', {});";
+
+    const shouldInit = (_config) => {
+      return true;
+    };
+
+    this.embark.addConsoleProviderInit('blockchain', code, shouldInit);
   }
 
   registerEvents() {
