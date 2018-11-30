@@ -34,4 +34,12 @@ __embarkWeb3.newContract = function (options) {
   return new this.web3.eth.Contract(options.abi, options.address);
 };
 
+__embarkWeb3.send = function () {
+  return this.web3.eth.sendTransaction(...arguments);
+};
+
+__embarkWeb3.toWei = function () {
+  return this.web3.toWei(...arguments);
+};
+
 
