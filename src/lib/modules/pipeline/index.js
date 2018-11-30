@@ -5,6 +5,7 @@ const utils = require('../../utils/utils.js');
 const ProcessLauncher = require('../../core/processes/processLauncher');
 const constants = require('../../constants');
 const WebpackConfigReader = require('../pipeline/webpackConfigReader');
+import LongRunningProcessTimer from '../../utils/longRunningProcessTimer';
 
 class Pipeline {
   constructor(embark, options) {
@@ -20,6 +21,7 @@ class Pipeline {
     this.pipelinePlugins = this.plugins.getPluginsFor('pipeline');
     this.pipelineConfig = embark.config.pipelineConfig;
     this.isFirstBuild = true;
+    this.useDashboard = options.useDashboard;
 
     this.events.setCommandHandler('pipeline:build', (options, callback) => this.build(options, callback));
     this.events.setCommandHandler('pipeline:build:contracts', callback => this.buildContracts(callback));
@@ -200,7 +202,7 @@ class Pipeline {
           if(err) return next(err);
 
           if (typeof config !== 'object' || config === null) {
-            return next(__('bad webpack config, the resolved config was null or not an object'));
+            return next(__('Pipeline: bad webpack config, the resolved config was null or not an object'));
           }
 
           const shouldRun = modifiedAssets.some(modifiedAsset => config.module.rules.some(rule => rule.test.test(modifiedAsset)));
@@ -209,14 +211,29 @@ class Pipeline {
       },
       function runWebpack(shouldNotRun, next) {
         if(shouldNotRun) return next();
-        self.logger.info(__(`running webpack with '${self.webpackConfigName}' config...`));
         const assets = Object.keys(self.assetFiles).filter(key => key.match(/\.js$/));
         if (!assets || !assets.length) {
           return next();
         }
+        let strAssets = '';
+        if(!self.useDashboard){
         assets.forEach(key => {
-          self.logger.info(__("writing file") + " " + (utils.joinPath(self.buildDir, key)).bold.dim);
+          strAssets += ('\n  ' + (utils.joinPath(self.buildDir, key)).bold.dim);
         });
+      }
+        const timer = new LongRunningProcessTimer(
+          self.logger,
+          'webpack',
+          '0',
+          `${'Pipeline:'.cyan} Webpacking dapp using '${self.webpackConfigName}' config...${strAssets}`,
+          `${'Pipeline:'.cyan} Still webpacking dapp... ({{duration}})`,
+          `${'Pipeline:'.cyan} Finished webpacking dapp in {{duration}}`,
+          !self.useDashboard,
+          undefined,
+          5000,
+          15000,
+        );
+        timer.start();
         let built = false;
         const webpackProcess = new ProcessLauncher({
           embark: self.embark,
@@ -247,6 +264,9 @@ class Pipeline {
           webpackProcess.kill();
           return next(msg.error);
         });
+        webpackProcess.once('result', constants.pipeline.webpackDone, () => {
+          timer.end();
+        });
       },
       function assetFileWrite(next) {
         async.eachOf(
@@ -261,7 +281,7 @@ class Pipeline {
             const isDir = targetFile.slice(-1) === '/' || targetFile.slice(-1) === '\\' || targetFile.indexOf('.') === -1;
             // if it's not a directory
             if (!isDir) {
-              self.logger.info(__("writing file") + " " + (utils.joinPath(self.buildDir, targetFile)).bold.dim);
+              self.logger.info('Pipeline: '.cyan + __("writing file") + " " + (utils.joinPath(self.buildDir, targetFile)).bold.dim);
             }
             async.map(
               files,
@@ -273,10 +293,10 @@ class Pipeline {
               },
               function (err, contentFiles) {
                 if (err) {
-                  self.logger.error(__('errors found while generating') + ' ' + targetFile);
+                  self.logger.error('Pipeline: '.cyan + __('errors found while generating') + ' ' + targetFile);
                 }
                 let dir = targetFile.split('/').slice(0, -1).join('/');
-                self.logger.trace("creating dir " + utils.joinPath(self.buildDir, dir));
+                self.logger.trace(`${'Pipeline:'.cyan} creating dir ` + utils.joinPath(self.buildDir, dir));
                 fs.mkdirpSync(utils.joinPath(self.buildDir, dir));
 
                 // if it's a directory
@@ -289,7 +309,7 @@ class Pipeline {
 
                   async.each(contentFiles, function (file, eachCb) {
                     let filename = file.filename.replace(file.basedir + '/', '');
-                    self.logger.info("writing file " + (utils.joinPath(self.buildDir, targetDir, filename)).bold.dim);
+                    self.logger.info(`${'Pipeline:'.cyan} writing file ` + (utils.joinPath(self.buildDir, targetDir, filename)).bold.dim);
 
                     fs.copy(file.path, utils.joinPath(self.buildDir, targetDir, filename), {overwrite: true}, eachCb);
                   }, cb);
