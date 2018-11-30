@@ -30,4 +30,8 @@ __embarkWeb3.setDefaultAccount = function (account) {
   this.web3.eth.defaultAccount = account;
 };
 
+__embarkWeb3.newContract = function (options) {
+  return new this.web3.eth.Contract(options.abi, options.address);
+};
+
 
